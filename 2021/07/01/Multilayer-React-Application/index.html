@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang=vi>
+<head>
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <meta name="description" content="Every successful project needs a clear architecture, which is understood by all team members.  We are considering adding Domain layer here. btw, with our current materials, this is already a good impr">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Multilayer React Application">
+<meta property="og:url" content="https://mnhlt.github.io/2021/07/01/Multilayer-React-Application/index.html">
+<meta property="og:site_name" content="mnhlt blog">
+<meta property="og:description" content="Every successful project needs a clear architecture, which is understood by all team members.  We are considering adding Domain layer here. btw, with our current materials, this is already a good impr">
+<meta property="og:locale" content="vi_VN">
+<meta property="og:image" content="https://mnhlt.github.io/images/multilayer-react/overview.png">
+<meta property="og:image" content="https://mnhlt.github.io/images/multilayer-react/unit-code.png">
+<meta property="og:image" content="https://mnhlt.github.io/images/multilayer-react/api-example-1624568393346.png">
+<meta property="og:image" content="https://mnhlt.github.io/images/multilayer-react/business-layer-1624568932555.png">
+<meta property="og:image" content="https://mnhlt.github.io/images/multilayer-react/business-layer-example.png">
+<meta property="og:image" content="https://mnhlt.github.io/images/multilayer-react/Views.png">
+<meta property="og:image" content="https://mnhlt.github.io/images/multilayer-react/update-user.png">
+<meta property="article:published_time" content="2021-06-30T21:51:00.000Z">
+<meta property="article:modified_time" content="2022-09-09T19:24:38.970Z">
+<meta property="article:author" content="Mạnh Lại">
+<meta property="article:tag" content="reactjs">
+<meta property="article:tag" content="architecture">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://mnhlt.github.io/images/multilayer-react/overview.png">
+    
+    
+      
+        
+          <link rel="shortcut icon" href="/images/favicon.ico">
+        
+      
+      
+        
+          <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+        
+      
+      
+        
+          <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+        
+      
+    
+    <!-- title -->
+    <title>Multilayer React Application</title>
+    <!-- styles -->
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <!-- persian styles -->
+    
+    <!-- rss -->
+    
+    
+	<!-- mathjax -->
+	
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body class="max-width mx-auto px3 ltr">
+    
+      <div id="header-post">
+  <a id="menu-icon" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#" aria-label="Menu"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" aria-label="Top" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+        <!--
+       --><li><a href="/">Trang chủ</a></li><!--
+     --><!--
+       --><li><a href="/about/me">Giới thiệu</a></li><!--
+     --><!--
+       --><li><a href="/search/">Tìm kiếm</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Bài viết</a></li><!--
+     --><!--
+       --><li><a href="/projects_url">Dự án</a></li><!--
+     -->
+      </ul>
+    </span>
+    <br/>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" aria-label="Về đầu trang" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" aria-label="Chia sẻ bài viết" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">Bài trước</span>
+      <span id="i-next" class="info" style="display:none;">Bài tiếp theo</span>
+      <span id="i-top" class="info" style="display:none;">Về đầu trang</span>
+      <span id="i-share" class="info" style="display:none;">Chia sẻ bài viết</span>
+    </span>
+    <br/>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://mnhlt.github.io/2021/07/01/Multilayer-React-Application/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://mnhlt.github.io/2021/07/01/Multilayer-React-Application/&text=Multilayer React Application"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://mnhlt.github.io/2021/07/01/Multilayer-React-Application/&title=Multilayer React Application"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mnhlt.github.io/2021/07/01/Multilayer-React-Application/&is_video=false&description=Multilayer React Application"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Multilayer React Application&body=Check out this article: https://mnhlt.github.io/2021/07/01/Multilayer-React-Application/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://mnhlt.github.io/2021/07/01/Multilayer-React-Application/&title=Multilayer React Application"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://mnhlt.github.io/2021/07/01/Multilayer-React-Application/&title=Multilayer React Application"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://mnhlt.github.io/2021/07/01/Multilayer-React-Application/&title=Multilayer React Application"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://mnhlt.github.io/2021/07/01/Multilayer-React-Application/&title=Multilayer React Application"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://mnhlt.github.io/2021/07/01/Multilayer-React-Application/&name=Multilayer React Application&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://mnhlt.github.io/2021/07/01/Multilayer-React-Application/&t=Multilayer React Application"><i class="fab fa-hacker-news " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Why-do-we-need-a-multilayer-structure-in-React"><span class="toc-number">1.</span> <span class="toc-text">Why do we need a multilayer structure in React?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Layer-Definition"><span class="toc-number">2.</span> <span class="toc-text">Layer Definition</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Unit-code-layer"><span class="toc-number">2.1.</span> <span class="toc-text">Unit code layer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Business-layer"><span class="toc-number">2.2.</span> <span class="toc-text">Business layer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#View-amp-Hooks-layer"><span class="toc-number">2.3.</span> <span class="toc-text">View &amp; Hooks layer</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#There-is-no-best-solution-only-trade-off-thing-exists"><span class="toc-number">3.</span> <span class="toc-text">There is no best solution, only trade-off thing exists</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pros"><span class="toc-number">3.1.</span> <span class="toc-text">Pros</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cons"><span class="toc-number">3.2.</span> <span class="toc-text">Cons</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Conclusions"><span class="toc-number">4.</span> <span class="toc-text">Conclusions</span></a></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        Multilayer React Application
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope itemtype="http://schema.org/Person">
+        <span itemprop="name">Mạnh Lại</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2021-06-30T21:51:00.000Z" itemprop="datePublished">2021-07-01</time>
+        
+      
+    </div>
+
+
+      
+    <div class="article-category">
+        <i class="fas fa-archive"></i>
+        <a class="category-link" href="/categories/coding/">coding</a> › <a class="category-link" href="/categories/coding/reactjs/">reactjs</a>
+    </div>
+
+
+      
+    <div class="article-tag">
+        <i class="fas fa-tag"></i>
+        <a class="tag-link-link" href="/tags/architecture/" rel="tag">architecture</a>, <a class="tag-link-link" href="/tags/reactjs/" rel="tag">reactjs</a>
+    </div>
+
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <p>Every successful project needs a clear architecture, which is understood by all team members.</p>
+<p><img src="/images/multilayer-react/overview.png" alt="Architecture overview"></p>
+<p><em>We are considering adding Domain layer here. btw, with our current materials, this is already a good improvement, we can improve it later</em></p>
+<h2 id="Why-do-we-need-a-multilayer-structure-in-React"><a href="#Why-do-we-need-a-multilayer-structure-in-React" class="headerlink" title="Why do we need a multilayer structure in React?"></a>Why do we need a multilayer structure in React?</h2><ul>
+<li><p>It helps us to define a clear architecture of an application.</p>
+</li>
+<li><p>With this, our source code is easy to understand. Newcomer will be happy with this.</p>
+</li>
+<li><p>Reduce dependency on tools&#x2F;technology. That means, we can choose whatever tool we want to use, update or replace it easily.</p>
+</li>
+<li><p>API can implement by any XHR-supported library like Axios, Node-fetch, Ajax, Request, GraphQl,…</p>
+<ul>
+<li>View can be implemented by React, Vue, Angular, … never mind, we just focus on React, right?</li>
+<li>Business layer, it’s just javascript, so you can reuse it in any javascript framework you want.</li>
+</ul>
+</li>
+<li><p>Easier to write test for each layer.</p>
+</li>
+<li><p>We can write unit test for every very small scope, so it takes a very small effort.</p>
+<ul>
+<li>If we need to do integration test? just do it with the business layer.</li>
+<li>If we need E2E test? just do it with the view layer.</li>
+</ul>
+</li>
+<li><p>Good file, folder structure to write and store code.</p>
+</li>
+<li><p>And many other benefits:</p>
+</li>
+<li><p>Optimize code reusing.</p>
+<ul>
+<li>Avoid code duplication.</li>
+<li>Harnessing team synergy.</li>
+</ul>
+</li>
+</ul>
+<p>Sound good enough? Let go to the definition.</p>
+<h2 id="Layer-Definition"><a href="#Layer-Definition" class="headerlink" title="Layer Definition"></a>Layer Definition</h2><h3 id="Unit-code-layer"><a href="#Unit-code-layer" class="headerlink" title="Unit code layer"></a>Unit code layer</h3><p><img src="/images/multilayer-react/unit-code.png" alt="unit-code"></p>
+<p>This layer includes a very small basic simple piece of code like API call, local configuration, constants, mapping function ,…<br>Do you need to do math? yep, you should do in this layer.</p>
+<p><img src="/images/multilayer-react/api-example-1624568393346.png" alt="api-example"></p>
+<h3 id="Business-layer"><a href="#Business-layer" class="headerlink" title="Business layer"></a>Business layer</h3><p><img src="/images/multilayer-react/business-layer-1624568932555.png" alt="business-layer"></p>
+<p>Yay, our main character here.<br>This layer will carry all the most complex things in our application, business logic. Every single piece of data of application should go through here.</p>
+<p>This layer should be designed to work standalone. Or we can say, our application are working from here.</p>
+<p><code>Business services</code> cover our data domain changes. like get user profile, update user profile.</p>
+<p><code>Application Services</code> cover application data changes. Navigate to other routes, toggle something in header, call a modal show up,..etc. UI layer may hooks to data in this layer to do updating.</p>
+<p>Each service should be constructed as a singleton instance. Each method of service should be designed to cover single or composite changes to data or application.</p>
+<p><img src="/images/multilayer-react/business-layer-example.png" alt="business layer"></p>
+<h3 id="View-amp-Hooks-layer"><a href="#View-amp-Hooks-layer" class="headerlink" title="View &amp; Hooks layer"></a>View &amp; Hooks layer</h3><p><img src="/images/multilayer-react/Views.png" alt="Views"></p>
+<p>Right now, we have a fully working application, agnostic of any framework, ready to be put to life by React.</p>
+<p>The view layer is composed of <code>UI Components</code> and <code>Hooks</code>.</p>
+<p><code>UI Components</code> are concerned with how thing look while <code>Hooks</code> take care of data to be rendered, from now we will call this data is <code>state</code>. Yes, that is UI-Hook relationship, they love each other and share private things together. <code>Hook&#39;s state</code> should use by only and only by <code>UI components</code> and <code>UI components</code> should call only and only action provided by <code>Hooks</code>. &lt;3</p>
+<p><code>UI Components</code> are designed to present things to users. Take state from <code>Hooks</code> to render, and call the action.</p>
+<p><code>Usecase hooks</code> take care of everything a view needs to render, provide action to call, make separated Business services working together. Usually it will stick with a specific view.</p>
+<p><code>Functional hooks</code> actually, we don’t need this type of hooks in this architecture, but to reuse all our designed hooks and keep familiar to our developer experience, this type of hook includes all hook thing doesn’t stick to specify business logic.</p>
+<p><code>UI/State hooks</code> some unit components need private state to handle their behaviors. like Tab container needs to know what Tab is active to highlight it over other tabs.</p>
+<p><img src="/images/multilayer-react/update-user.png" alt="update-user"></p>
+<hr>
+<h2 id="There-is-no-best-solution-only-trade-off-thing-exists"><a href="#There-is-no-best-solution-only-trade-off-thing-exists" class="headerlink" title="There is no best solution, only trade-off thing exists"></a>There is no best solution, only trade-off thing exists</h2><h3 id="Pros"><a href="#Pros" class="headerlink" title="Pros"></a>Pros</h3><ul>
+<li>Clean, clear architecture.</li>
+<li>Robust, reliable framework for long-term development.</li>
+<li>Easy to maintain, update dependencies.</li>
+<li>Consistent convention, coding style.</li>
+<li>Consistent concepts go through all projects. We can gather all projects in one place with one architect with one configuration. Learn one code everywhere.</li>
+<li>Easy to reuse code in truly way.</li>
+<li>Every business logic collected to a single place. It’s easy to learn, so you can avoid write duplication code.</li>
+<li>Test, test, test, everything is easy to test.</li>
+<li>Everything grows up professionally. (or I call it Enterprise class)</li>
+</ul>
+<h3 id="Cons"><a href="#Cons" class="headerlink" title="Cons"></a>Cons</h3><ul>
+<li><p>Feel everything is lengthy if you are not familiar with this style of coding. Take time to get familiar, I don’t see people talking too much about architecture in React world. this may be something new to you.</p>
+</li>
+<li><p>Hard to avoid boilerplate.</p>
+<ul>
+<li>Try…catch everywhere</li>
+<li>There is no soft way to handle small logic.<ul>
+<li>Eg: A simple view, need to call a simple api, not need to handle anything. you must still write View, Hook -&gt; Service -&gt; API</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>Our code base is not lightweight anymore. <em>But do you need a lightweight thing when it take many effort to maintain?</em></p>
+</li>
+<li><p>Rare but do exist, business layer can grow too big make initial bundle become big too.</p>
+</li>
+</ul>
+<h2 id="Conclusions"><a href="#Conclusions" class="headerlink" title="Conclusions"></a>Conclusions</h2><p>In this article, we looked at how to organize a React project to make it more efficient. By separating the responsibilities for each layer in multilayer concept, we can turn our project into a much more organized structure, easy to understand and represent to a good file structure.</p>
+<p>With such an approach, each layer (and it representing files structure) will have its own place and responsibilities. This will enable me and my team to set architecture standards, make the entire codebase more robust and maintainable, and streamline our development process. Newcomers join our team can read this article and feel comfortable to continue our work.</p>
+<p>If you liked this guide, please help me to share it. If you want to help me to improve it, i am interested in your comment in <a target="_blank" rel="noopener" href="https://github.com/mnhlt/mnhlt.github.io/issues">here</a>.</p>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">Trang chủ</a></li>
+         
+          <li><a href="/about/me">Giới thiệu</a></li>
+         
+          <li><a href="/search/">Tìm kiếm</a></li>
+         
+          <li><a href="/archives/">Bài viết</a></li>
+         
+          <li><a href="/projects_url">Dự án</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Why-do-we-need-a-multilayer-structure-in-React"><span class="toc-number">1.</span> <span class="toc-text">Why do we need a multilayer structure in React?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Layer-Definition"><span class="toc-number">2.</span> <span class="toc-text">Layer Definition</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Unit-code-layer"><span class="toc-number">2.1.</span> <span class="toc-text">Unit code layer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Business-layer"><span class="toc-number">2.2.</span> <span class="toc-text">Business layer</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#View-amp-Hooks-layer"><span class="toc-number">2.3.</span> <span class="toc-text">View &amp; Hooks layer</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#There-is-no-best-solution-only-trade-off-thing-exists"><span class="toc-number">3.</span> <span class="toc-text">There is no best solution, only trade-off thing exists</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Pros"><span class="toc-number">3.1.</span> <span class="toc-text">Pros</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Cons"><span class="toc-number">3.2.</span> <span class="toc-text">Cons</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Conclusions"><span class="toc-number">4.</span> <span class="toc-text">Conclusions</span></a></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.facebook.com/sharer.php?u=https://mnhlt.github.io/2021/07/01/Multilayer-React-Application/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://twitter.com/share?url=https://mnhlt.github.io/2021/07/01/Multilayer-React-Application/&text=Multilayer React Application"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.linkedin.com/shareArticle?url=https://mnhlt.github.io/2021/07/01/Multilayer-React-Application/&title=Multilayer React Application"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://pinterest.com/pin/create/bookmarklet/?url=https://mnhlt.github.io/2021/07/01/Multilayer-React-Application/&is_video=false&description=Multilayer React Application"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=Multilayer React Application&body=Check out this article: https://mnhlt.github.io/2021/07/01/Multilayer-React-Application/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://getpocket.com/save?url=https://mnhlt.github.io/2021/07/01/Multilayer-React-Application/&title=Multilayer React Application"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://reddit.com/submit?url=https://mnhlt.github.io/2021/07/01/Multilayer-React-Application/&title=Multilayer React Application"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.stumbleupon.com/submit?url=https://mnhlt.github.io/2021/07/01/Multilayer-React-Application/&title=Multilayer React Application"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://digg.com/submit?url=https://mnhlt.github.io/2021/07/01/Multilayer-React-Application/&title=Multilayer React Application"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="http://www.tumblr.com/share/link?url=https://mnhlt.github.io/2021/07/01/Multilayer-React-Application/&name=Multilayer React Application&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" target="_blank" rel="noopener" href="https://news.ycombinator.com/submitlink?u=https://mnhlt.github.io/2021/07/01/Multilayer-React-Application/&t=Multilayer React Application"><i class="fab fa-hacker-news fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> Menu</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> TOC</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> Chia sẻ</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> Về đầu trang</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Bản quyền &copy;
+    
+    
+    2016-2022
+    Mạnh Lại
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+        <!--
+       --><li><a href="/">Trang chủ</a></li><!--
+     --><!--
+       --><li><a href="/about/me">Giới thiệu</a></li><!--
+     --><!--
+       --><li><a href="/search/">Tìm kiếm</a></li><!--
+     --><!--
+       --><li><a href="/archives/">Bài viết</a></li><!--
+     --><!--
+       --><li><a href="/projects_url">Dự án</a></li><!--
+     -->
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+
+
+
+  <link rel="preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+
+
+    <!-- jquery -->
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" crossorigin="anonymous"></script> 
+
+
+
+
+<!-- clipboard -->
+
+  
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.7/clipboard.min.js" crossorigin="anonymous"></script> 
+  
+  <script type="text/javascript">
+  $(function() {
+    // copy-btn HTML
+    var btn = "<span class=\"btn-copy tooltipped tooltipped-sw\" aria-label=\"Copy to clipboard!\">";
+    btn += '<i class="far fa-clone"></i>';
+    btn += '</span>'; 
+    // mount it!
+    $(".highlight table").before(btn);
+    var clip = new ClipboardJS('.btn-copy', {
+      text: function(trigger) {
+        return Array.from(trigger.nextElementSibling.querySelectorAll('.code')).reduce((str,it)=>str+it.innerText+'\n','')
+      }
+    });
+    clip.on('success', function(e) {
+      e.trigger.setAttribute('aria-label', "Copied!");
+      e.clearSelection();
+    })
+  })
+  </script>
+
+
+<script src="/js/main.js"></script>
+
+<!-- search -->
+
+<!-- Google Analytics -->
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FHQWWKMY9T"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FHQWWKMY9T');
+    </script>
+
+<!-- Baidu Analytics -->
+
+<!-- Cloudflare Analytics -->
+
+<!-- Umami Analytics -->
+
+<!-- Disqus Comments -->
+
+<!-- utterances Comments -->
+
+</body>
+</html>
